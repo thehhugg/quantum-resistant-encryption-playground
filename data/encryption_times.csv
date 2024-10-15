@@ -1,0 +1,4 @@
+lattice_size,encryption_time,keygen_time,decryption_time
+512,0.28,0.02,0.12
+768,0.54,0.03,0.20
+1024,0.82,0.04,0.30
