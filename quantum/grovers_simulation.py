@@ -1,12 +1,10 @@
 # quantum/grovers_simulation.py
 
-import numpy as np
-from qiskit import QuantumCircuit, Aer, transpile, assemble
-from qiskit.visualization import plot_histogram
-from qiskit.providers.aer import AerSimulator
+from qiskit import QuantumCircuit
+from qiskit.quantum_info import Operator  # Use Operator to calculate unitary matrix
 
 def grovers_algorithm():
-    """Runs a simple Grover's algorithm simulation."""
+    """Runs a simple Grover's algorithm simulation and calculates the unitary matrix."""
 
     # Create quantum circuit with 2 qubits
     circuit = QuantumCircuit(2)
@@ -20,21 +18,11 @@ def grovers_algorithm():
     # Apply Hadamard gates again
     circuit.h([0, 1])
 
-    # Measure qubits
-    circuit.measure_all()
-
-    # Use simulator to run circuit
-    simulator = AerSimulator()
-    compiled_circuit = transpile(circuit, simulator)
-    qobj = assemble(compiled_circuit)
-    result = simulator.run(qobj).result()
+    # Calculate unitary matrix using the Operator class
+    unitary = Operator(circuit)
     
-    # Get counts and display results
-    counts = result.get_counts(circuit)
-    plot_histogram(counts)
-    
-    return counts
+    # Print unitary matrix
+    print("Unitary matrix:\n", unitary.data)
 
 if __name__ == "__main__":
-    result = grovers_algorithm()
-    print(f"Grover's Algorithm Result: {result}")
+    grovers_algorithm()
