@@ -1,0 +1,18 @@
+# requirements.txt
+
+# Numerical and Scientific Computing
+numpy
+scipy
+
+# Machine Learning
+scikit-learn
+tensorflow  # If you prefer PyTorch, replace with 'torch'
+
+# Quantum Computing
+qiskit
+
+# Data Visualization
+matplotlib
+
+# Additional Utilities
+pandas
