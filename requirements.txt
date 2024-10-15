@@ -16,3 +16,4 @@ matplotlib
 
 # Additional Utilities
 pandas
+xgboost
