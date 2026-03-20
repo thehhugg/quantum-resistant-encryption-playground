@@ -16,6 +16,9 @@ matplotlib>=3.7,<4
 # Data Handling
 pandas>=2.0,<3
 
+# Post-Quantum Cryptography (ML-KEM key encapsulation)
+kyber-py>=1.0,<2
+
 # Optional: Quantum Computing (needed for quantum/ simulations)
 # Install separately if you want to run Grover's/Shor's examples:
 #   pip install qiskit>=1.0
