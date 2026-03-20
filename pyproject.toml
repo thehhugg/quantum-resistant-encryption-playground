@@ -1,0 +1,66 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "quantum-resistant-encryption-playground"
+version = "0.1.0"
+description = "A hands-on learning environment for post-quantum cryptography"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.9"
+keywords = [
+    "post-quantum",
+    "cryptography",
+    "lattice",
+    "kyber",
+    "dilithium",
+    "ML-KEM",
+    "ML-DSA",
+    "education",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Education",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Security :: Cryptography",
+    "Topic :: Education",
+]
+dependencies = [
+    "numpy>=1.24,<3",
+    "scipy>=1.10,<2",
+    "scikit-learn>=1.3,<2",
+    "matplotlib>=3.7,<4",
+    "pandas>=2.0,<3",
+    "kyber-py>=1.0,<2",
+    "dilithium-py>=1.0,<2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "ruff>=0.1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/thehhugg/quantum-resistant-encryption-playground"
+Repository = "https://github.com/thehhugg/quantum-resistant-encryption-playground"
+Issues = "https://github.com/thehhugg/quantum-resistant-encryption-playground/issues"
+
+[tool.setuptools.packages.find]
+include = ["ai*", "quantum*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+target-version = "py39"
+line-length = 100
