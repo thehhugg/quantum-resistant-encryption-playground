@@ -1,13 +1,19 @@
 # ai/lattice_optimizer.py
 
+import os
 import numpy as np
 from sklearn.linear_model import LinearRegression
 import matplotlib.pyplot as plt
 import pandas as pd
 
+# Build the path to the CSV relative to this script's location,
+# so it works regardless of the caller's working directory.
+_SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+_DATA_PATH = os.path.join(_SCRIPT_DIR, '..', 'data', 'encryption_times.csv')
+
 # Load data from CSV file, assuming real performance data is stored there
 # CSV should contain lattice_size, encryption_time, keygen_time, decryption_time
-data = pd.read_csv('../data/encryption_times.csv')
+data = pd.read_csv(_DATA_PATH)
 
 # Extract features and target
 features = data[['lattice_size', 'keygen_time', 'decryption_time']].values
