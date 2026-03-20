@@ -1,71 +1,139 @@
 # Quantum-Resistant Encryption Playground
 
-This repository collects small experiments around post-quantum cryptography and simple quantum algorithms. It bundles
-machine learning utilities for analyzing encryption performance, a minimal quantum circuit example, and helper scripts
-for working with the [Kyber](https://www.pq-crystals.org/kyber/) key encapsulation mechanism.
+A hands-on learning environment for post-quantum cryptography (PQC). Run real NIST-standardized algorithms, simulate the quantum attacks that motivate them, and explore how lattice-based cryptography works — all in Python, with no quantum hardware required.
 
-## Repository layout
+## Why This Exists
 
-```
-.
-├── ai/                  # Machine learning utilities for lattice-based schemes
-│   ├── lattice_optimizer.py
-│   ├── parameter_optimization.py
-│   └── utils/
-├── data/                # Example benchmark data
-│   └── encryption_times.csv
-├── kyber/               # Placeholder for the Kyber reference implementation
-├── quantum/             # Simple quantum circuit example (Grover's)
-├── scripts/             # Helper scripts such as Kyber downloader
-└── requirements.txt     # Python dependencies
-```
+Classical public-key cryptography (RSA, Diffie-Hellman, ECDSA) will be broken by a sufficiently large quantum computer running **Shor's algorithm**. NIST has standardized new algorithms to resist this threat:
 
-### `ai/`
-* `parameter_optimization.py` – Demonstrates linear regression on synthetic lattice sizes and encryption times.
-* `lattice_optimizer.py` – Loads `data/encryption_times.csv` and trains a regression model to predict encryption time.
-* `utils/data_handler.py` – Small helpers for loading and saving CSV files.
+| Standard | Algorithm Family | Purpose | Playground Example |
+|----------|-----------------|---------|-------------------|
+| [FIPS 203](https://csrc.nist.gov/pubs/fips/203/final) | ML-KEM (Kyber) | Key encapsulation | `examples/01_ml_kem_keygen.py` |
+| [FIPS 204](https://csrc.nist.gov/pubs/fips/204/final) | ML-DSA (Dilithium) | Digital signatures | `examples/02_ml_dsa_signatures.py` |
 
-### `quantum/`
-* `grovers_simulation.py` – Uses Qiskit to build a two-qubit Grover circuit and prints its unitary matrix.
+This playground lets you run these algorithms, see their outputs, and understand what they do — without needing a PhD in lattice theory.
 
-### `kyber/`
-The Kyber implementation is **not** bundled in the repository. Use the helper script to download it:
+## Quick Start
 
 ```bash
-python scripts/download_kyber.py
-```
+# Clone the repository
+git clone https://github.com/thehhugg/quantum-resistant-encryption-playground.git
+cd quantum-resistant-encryption-playground
 
-or manually clone the official repo into `kyber/`.
+# Install dependencies
+pip install -r requirements.txt
 
-## Setup
-1. Create a virtual environment (optional but recommended).
-2. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-3. (Optional) run the Kyber download step above.
+# Run the ML-KEM (Kyber) key encapsulation demo
+python examples/01_ml_kem_keygen.py
 
-## Usage
-Examples can be executed directly with Python:
+# Run the ML-DSA (Dilithium) digital signature demo
+python examples/02_ml_dsa_signatures.py
 
-```bash
-# Predict encryption time for a specific lattice size
-python ai/parameter_optimization.py
-
-# Use real benchmark data and visualize the model
-python ai/lattice_optimizer.py
-
-# Run a small Grover's algorithm simulation
+# Simulate Grover's search algorithm
 python quantum/grovers_simulation.py
+
+# Simulate Shor's factoring algorithm
+python quantum/shors_simulation.py
 ```
 
-The provided `data/encryption_times.csv` contains sample performance measurements with columns `lattice_size`,
-`encryption_time`, `keygen_time` and `decryption_time`.
+## What's Inside
+
+### `examples/` — Post-Quantum Cryptography
+
+Working demonstrations of NIST-standardized post-quantum algorithms.
+
+**`01_ml_kem_keygen.py`** — ML-KEM (Kyber) key encapsulation. Generates keys, encapsulates a shared secret, and decapsulates it. Runs all three parameter sets (ML-KEM-512, 768, 1024) and reports key sizes, ciphertext sizes, and timing.
+
+**`02_ml_dsa_signatures.py`** — ML-DSA (Dilithium) digital signatures. Generates signing keys, signs a message, verifies the signature, and demonstrates tamper detection. Runs all three parameter sets (ML-DSA-44, 65, 87).
+
+### `quantum/` — Quantum Algorithm Simulations
+
+Educational simulations of the quantum algorithms that threaten classical cryptography. Built with NumPy — no Qiskit or quantum hardware needed.
+
+**`grovers_simulation.py`** — Grover's search algorithm. Shows how a quantum computer can search an unsorted space in O(sqrt(N)) time, which halves the effective key length of symmetric ciphers like AES. Configurable qubit count and target state. Generates a probability distribution chart.
+
+```bash
+python quantum/grovers_simulation.py --qubits 4 --target 7
+```
+
+**`shors_simulation.py`** — Shor's factoring algorithm. Demonstrates the algorithm that breaks RSA by factoring integers in polynomial time. Includes the full pipeline: classical reduction, simulated quantum period-finding, and continued fraction post-processing.
+
+```bash
+python quantum/shors_simulation.py --number 91 --verbose
+```
+
+### `ai/` — Performance Analysis
+
+Machine learning models that analyze encryption performance data. These scripts use linear regression to predict encryption times based on lattice parameters.
+
+**`lattice_optimizer.py`** — Multi-feature regression model predicting encryption time from lattice size, key generation time, and decryption time.
+
+**`parameter_optimization.py`** — Single-feature regression model predicting encryption time from lattice size, with visualization.
+
+### `data/` — Sample Data
+
+**`encryption_times.csv`** — Sample performance measurements for lattice-based encryption at different parameter sizes.
+
+### `scripts/` — Utilities
+
+**`download_kyber.py`** — Optional script to clone the official Kyber C reference implementation. Most users do not need this; the Python examples use `kyber-py` instead.
+
+## Project Structure
+
+```
+quantum-resistant-encryption-playground/
+├── examples/
+│   ├── 01_ml_kem_keygen.py          # ML-KEM key encapsulation demo
+│   └── 02_ml_dsa_signatures.py      # ML-DSA digital signature demo
+├── quantum/
+│   ├── grovers_simulation.py        # Grover's search algorithm
+│   └── shors_simulation.py          # Shor's factoring algorithm
+├── ai/
+│   ├── lattice_optimizer.py         # Multi-feature performance model
+│   ├── parameter_optimization.py    # Single-feature performance model
+│   └── utils/
+│       └── data_handler.py          # CSV data loading utilities
+├── data/
+│   └── encryption_times.csv         # Sample performance data
+├── scripts/
+│   └── download_kyber.py            # Optional: clone Kyber C reference
+├── requirements.txt
+├── LICENSE
+└── README.md
+```
+
+## Requirements
+
+- Python 3.9+
+- Dependencies are listed in `requirements.txt`:
+  - `numpy`, `scipy`, `scikit-learn`, `matplotlib`, `pandas` — numerical computing and visualization
+  - `kyber-py` — pure-Python ML-KEM implementation (educational)
+  - `dilithium-py` — pure-Python ML-DSA implementation (educational)
+
+Install everything with:
+
+```bash
+pip install -r requirements.txt
+```
+
+## Important Disclaimer
+
+The cryptographic implementations used in this playground (`kyber-py`, `dilithium-py`) are **educational, not production-grade**. They are not constant-time and must not be used to protect real data. For production use, see [liboqs](https://github.com/open-quantum-safe/liboqs) or your language's official PQC library.
+
+## Learning Path
+
+If you are new to post-quantum cryptography, here is a suggested order:
+
+1. **Start with Shor's** (`quantum/shors_simulation.py --verbose`). Understand why classical crypto is threatened.
+2. **Run Grover's** (`quantum/grovers_simulation.py`). See why symmetric key lengths need to double.
+3. **Try ML-KEM** (`examples/01_ml_kem_keygen.py`). This is the replacement for Diffie-Hellman / RSA key exchange.
+4. **Try ML-DSA** (`examples/02_ml_dsa_signatures.py`). This is the replacement for RSA / ECDSA signatures.
+5. **Explore the AI analysis** (`ai/lattice_optimizer.py`). See how lattice parameters affect performance.
 
 ## Contributing
-Pull requests are welcome for additional experiments or improvements. Feel free to open issues to discuss ideas or
-questions about the playground.
+
+Contributions are welcome. Please open an issue first to discuss what you would like to change.
 
 ## License
-This repository is intended for educational purposes. The Kyber implementation retains its original license in the
-`kyber/` directory. Other code in this repository is provided under the MIT License.
+
+[MIT](LICENSE)
