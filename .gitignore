@@ -2,3 +2,6 @@ env/
 kyber/grovers_result.png
 parameter_optimization.png
 lattice_optimizer.png
+__pycache__/
+*.pyc
+benchmark_results.png
